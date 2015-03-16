@@ -185,6 +185,10 @@ class assign_submission_engcentral extends assign_submission_plugin {
 
 	//this inits the M.mod_englishcentral thingy, after the page has loaded.
 	$PAGE->requires->js_init_call('M.mod_englishcentral.playerhelper.init', array($opts),false,$jsmodule);
+	
+	//this loads the strings we need into JS
+	$PAGE->requires->strings_for_js(array('sessionresults','sessionscore','sessiongrade','lineswatched',
+						'linesrecorded','compositescore','sessionactivetime','totalactivetime'), 'englishcentral');
 
 	//this loads the external JS libraries we need to call
 	$PAGE->requires->js(new moodle_url('http://www.englishcentral.com/platform/ec.js'));
@@ -411,21 +415,18 @@ class assign_submission_engcentral extends assign_submission_plugin {
         return $ret;
         */
         
-    	$ret = '<br/><b>Session Active Time:  </b>' . $ecsub->activetime  . ' seconds<br />';
-    	$ret .= '<b>Total Active Time:  </b>' . ($ecsub->totalactivetime ? $ecsub->totalactivetime  . ' seconds' : ' unfinished') . '<br />';
-    	if($ecsub->totalactivetime > 0){
-    		$ret .= '<b>Total Time on Task:  </b>' * $ecsub->timeontaskclock . '<br />';
-    	}
-    	$ret .= '<b>Lines Watched:  </b>' . $ecsub->lineswatched . '/' . $ecsub->linestotal . '<br />';
-    	$ret .= '<b>Lines Recorded:  </b>' . $ecsub->linesrecorded . '<br />';
-    	$ret .= '<b>Session Score:  </b>' . $ecsub->sessionscore . '%' . '<br />';
-    	$ret .= '<b>Session Grade:  </b>' . $ecsub->sessiongrade . '<br />';
+    	$ret = '<br/><b>' . get_string('sessionactivetime', 'englishcentral') .':  </b>' . $ecsub->activetime  . ' seconds<br />';
+    	$ret .= '<b>' . get_string('totalactivetime', 'englishcentral') .':  </b>' . ($ecsub->totalactivetime ? $ecsub->totalactivetime  . ' seconds' : ' unfinished') . '<br />';
+    	$ret .= '<b>' . get_string('lineswatched', 'englishcentral') .':  </b>' . $ecsub->lineswatched . '/' . $ecsub->linestotal . '<br />';
+    	$ret .= '<b>' . get_string('linesrecorded', 'englishcentral') .':  </b>' . $ecsub->linesrecorded . '<br />';
+    	$ret .= '<b>' . get_string('sessionscore', 'englishcentral') .':  </b>' . $ecsub->sessionscore . '%' . '<br />';
+    	$ret .= '<b>' . get_string('sessiongrade', 'englishcentral') .':  </b>' . $ecsub->sessiongrade . '<br />';
     	$completionrate = $ecsub->recordingcomplete ? 1: 0;
     	//this won't work im speaklite because linestotal = recordable lines
     	if(($this->get_config('speakmode')==1 && $this->get_config('speaklitemode')!=1)  && $ecsub->linesrecorded>0){
     		$completionrate = $ecsub->linesrecorded / $ecsub->linestotal;
     	}
-    	$ret .= '<b>Completed Score:  </b>' . round($completionrate * $ecsub->sessionscore ,0) . '%<br />';
+    	$ret .= '<b>' . get_string('compositescore', 'englishcentral') .':  </b>' . round($completionrate * $ecsub->sessionscore ,0) . '%<br />';
         return $ret;
      
     }
