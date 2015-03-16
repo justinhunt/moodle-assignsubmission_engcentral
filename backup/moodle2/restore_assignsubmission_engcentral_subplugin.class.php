@@ -68,7 +68,6 @@ class restore_assignsubmission_engcentral_subplugin extends restore_subplugin {
 
         $DB->insert_record('assignsubmission_engcentral', $data);
 
-        $this->add_related_files('assignsubmission_engcentral', 'submissions_engcentral', 'submission', null, $oldsubmissionid);
     }
 
 }

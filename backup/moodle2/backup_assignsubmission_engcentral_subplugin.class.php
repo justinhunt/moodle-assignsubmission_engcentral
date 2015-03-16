@@ -18,7 +18,7 @@
  * This file contains the class for backup of this submission plugin
  *
  * @package assignsubmission_engcentral
- * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
+ * @copyright 2015 Justin Hunt {@link http://www.poodll.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -46,8 +46,11 @@ class backup_assignsubmission_engcentral_subplugin extends backup_subplugin {
         $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
         $subpluginelement = new backup_nested_element('submission_engcentral',
-                                                      null,
-                                                      array('engcentral', 'onlineformat', 'submission'));
+								  null,
+								  array('submission','videoid', 'linestotal','totalactivetime',
+								  'timeontaskclock','watchedcomplete','activetime','datecompleted','linesrecorded','lineswatched',
+								  'points','recordingcomplete','sessiongrade','sessionscore')
+								);
 
         // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
@@ -57,9 +60,6 @@ class backup_assignsubmission_engcentral_subplugin extends backup_subplugin {
         $subpluginelement->set_source_table('assignsubmission_engcentral',
                                           array('submission' => backup::VAR_PARENTID));
 
-        $subpluginelement->annotate_files('assignsubmission_engcentral',
-                                          'submissions_engcentral',
-                                          'submission');
         return $subplugin;
     }
 

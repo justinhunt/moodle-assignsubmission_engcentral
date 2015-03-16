@@ -20,7 +20,7 @@
  * This class provides all the functionality for the new assign module.
  *
  * @package assignsubmission_engcentral
- * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
+ * @copyright 2015 Justin Hunt {@link http://www.poodll.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -75,8 +75,8 @@ class assign_submission_engcentral extends assign_submission_plugin {
 		//just for now
 		$gconfig = get_config('assignsubmission_engcentral');
 		$config = new stdClass();
-		$config->videotitle = $this->get_config('videotitle') ?  $this->get_config('videotitle') : '';
-		$config->videoid = $this->get_config('videoid') ?  $this->get_config('videoid') : '';
+		$config->videotitle = $this->get_config('videotitle') ?  $this->get_config('videotitle') : '-English Central video title -';
+		$config->videoid = $this->get_config('videoid') ?  $this->get_config('videoid') : '-English Central video id-';
 		
 		//-------------------------------------------------------------------------------
         // Adding the rest of englishcentral settings, spreeading all them into this fieldset
@@ -261,6 +261,7 @@ class assign_submission_engcentral extends assign_submission_plugin {
 		foreach($hiddenelements as $element){
 			$thevalue = trim($data->{self::NM . '_' . $element});
 			switch($element){
+
 				case 'sessionGrade':
 					if(!$thevalue){
 						$thevalue='';
@@ -293,6 +294,12 @@ class assign_submission_engcentral extends assign_submission_plugin {
 					
 			}
 			$engcentralsubmission->{strtolower($element)}=$thevalue;
+		}
+		
+		//if we have no video id or the active time is zero, we should not save.
+		//the user has not interacted with EC and if we save we might overwrite previous submission
+		if(!$engcentralsubmission->videoid || !$engcentralsubmission->activetime){
+			return true;
 		}
 			
         if ($existingsubmission) {
@@ -521,20 +528,6 @@ class assign_submission_engcentral extends assign_submission_plugin {
         return true;
     }
 
-    /**
-     * Return a description of external params suitable for uploading an engcentral submission from a webservice.
-     *
-     * @return external_description|null
-     */
-     /*
-    public function get_external_parameters() {
-        $editorparams = array('text' => new external_value(PARAM_TEXT, 'The text for this submission.'),
-                              'format' => new external_value(PARAM_INT, 'The format for this submission'),
-                              'itemid' => new external_value(PARAM_INT, 'The draft area id for files attached to the submission'));
-        $editorstructure = new external_single_structure($editorparams);
-        return array('engcentral_editor' => $editorstructure);
-    }
-    */
 
 }
 
