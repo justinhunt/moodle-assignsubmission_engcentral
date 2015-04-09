@@ -191,7 +191,7 @@ class assign_submission_engcentral extends assign_submission_plugin {
 						'linesrecorded','compositescore','sessionactivetime','totalactivetime'), 'englishcentral');
 
 	//this loads the external JS libraries we need to call
-	$PAGE->requires->js(new moodle_url('http://www.englishcentral.com/platform/ec.js'));
+	$PAGE->requires->js(new moodle_url('https://www.englishcentral.com/platform/ec.js'));
 	$renderer = $PAGE->get_renderer('mod_englishcentral');
 	$echtml = $renderer->show_bigbutton(false);
 	$echtml .= $renderer->show_ec_box();
