@@ -496,7 +496,7 @@ class assign_submission_engcentral extends assign_submission_plugin {
     public function is_empty(stdClass $submission) {
         $engcentralsubmission = $this->get_engcentral_submission($submission->id);
         //if we have a video id, something was done
-        return !$engcentralsubmission->videoid;
+        return !$engcentralsubmission || !$engcentralsubmission->videoid;
 
     }
 
